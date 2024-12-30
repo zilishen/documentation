@@ -60,6 +60,11 @@
       "name": "Settings",
       "description": "Configuration option for different aspect of NGINX One service.\nYou can set NGINX Instance cleanup preferences.\n",
       "x-displayName": "Settings"
+    },
+    {
+      "name": "Inventory",
+      "description": "Get tenant usage information for NGINX Plus data plane instances. These metrics are collected by the NGINX data plane instances and reported to NGINX One Console.\n",
+      "x-displayName": "Inventory"
     }
   ],
   "paths": {
@@ -2501,6 +2506,60 @@
           }
         }
       },
+      "patch": {
+        "x-nginx-one-action": "bulk",
+        "x-nginx-one-entity": "NGINX certificate",
+        "x-feature-flag": "cert-api-bulk",
+        "x-nodoc": true,
+        "tags": [
+          "Certificates"
+        ],
+        "summary": "Bulk operation on multiple managed certificates.",
+        "operationId": "bulkCertificates",
+        "description": "Performs bulk operation on one or more managed certificates, only delete is supported.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateBulkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch request completed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateBulkResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server. Please try the request again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/certificates/parse": {
       "post": {
@@ -3358,6 +3417,84 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalServerErr"
+          }
+        }
+      }
+    },
+    "/inventory": {
+      "post": {
+        "x-feature-flag": "inventory",
+        "tags": [
+          "Inventory"
+        ],
+        "summary": "NGINX Plus: Retrieve tenant usage information",
+        "operationId": "getInventory",
+        "description": "Based on query parameters.\n\nYou can filter and aggregate metrics by name and `start_time` through `end_time`.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryMetricQueryRequest"
+              },
+              "example": {
+                "start_time": "now-1d",
+                "end_time": "now",
+                "metrics": [
+                  {
+                    "name": "nginx.plus.instances",
+                    "aggregate": [
+                      "count",
+                      "sum",
+                      "avg",
+                      "min",
+                      "max"
+                    ]
+                  },
+                  {
+                    "name": "k8s.cluster.nodes",
+                    "aggregate": [
+                      "count",
+                      "sum",
+                      "avg",
+                      "min",
+                      "max"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved tenant usage information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request cannot be processed due to invalid input or parameters. Verify the request format and provided data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server. Please try the request again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -5386,11 +5523,13 @@
         "description": "Keywords for config sync groups filters.\nWhen filtering on `config_status`, only the following `filter_values` are supported:\n  * in_sync\n  * out_of_sync\n  * sync_in_progress\n  * unknown\n",
         "enum": [
           "name",
-          "config_status"
+          "config_status",
+          "object_id"
         ],
         "x-enum-varnames": [
           "filter_name_config_sync_group_name",
-          "filter_name_config_sync_group_config_status"
+          "filter_name_config_sync_group_config_status",
+          "filter_name_config_sync_group_object_id"
         ]
       },
       "ListConfigSyncGroupObject": {
@@ -5744,14 +5883,16 @@
           "management",
           "type",
           "subject_name",
-          "status"
+          "status",
+          "object_id"
         ],
         "x-enum-varnames": [
           "filter_name_certificates_name",
           "filter_name_certificates_management",
           "filter_name_certificates_type",
           "filter_name_certificates_subject_name",
-          "filter_name_certificates_status"
+          "filter_name_certificates_status",
+          "filter_name_certificates_object_id"
         ]
       },
       "CertificateManagement": {
@@ -6345,10 +6486,10 @@
             "type": "object",
             "description": "List of certificate deployments for a SSL certificate.",
             "required": [
-              "deployments"
+              "items"
             ],
             "properties": {
-              "deployments": {
+              "items": {
                 "description": "An array of certificate deployments for an SSL certificate. If this certificate object represents a \nCA bundle, there will be only public certificate file paths in the certificate deployment details.\n",
                 "type": "array",
                 "items": {
@@ -6363,7 +6504,7 @@
           "count": 2,
           "start_index": 1,
           "items_per_page": 100,
-          "deployments": [
+          "items": [
             {
               "association_type": "instance",
               "name": "instance-host-name",
@@ -7642,6 +7783,223 @@
             "minimum": 0
           }
         }
+      },
+      "InventoryResponse": {
+        "type": "object",
+        "required": [
+          "query_metadata",
+          "metrics"
+        ],
+        "properties": {
+          "query_metadata": {
+            "$ref": "#/components/schemas/InventoryMetricQueryMetadata"
+          },
+          "metrics": {
+            "description": "An array of collected metrics, which includes the name of the resource, aggregate function, and series details.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Metric"
+            }
+          }
+        }
+      },
+      "InventoryMetricQueryMetadata": {
+        "description": "Includes details about the time period and resolution of the metrics query.\n",
+        "type": "object",
+        "properties": {
+          "start_time": {
+            "description": "The start time of your metrics query.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-08-07T09:57:36.088757764Z"
+          },
+          "end_time": {
+            "description": "The end time of your metrics query.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-08-07T09:57:36.088757764Z"
+          },
+          "resolution": {
+            "description": "The level of granularity for the time series data.",
+            "type": "string",
+            "example": "1h"
+          }
+        }
+      },
+      "Metric": {
+        "type": "object",
+        "required": [
+          "metric",
+          "series"
+        ],
+        "description": "This object represents a metric, including the name of the metric resource, aggregate function, and series details.\n",
+        "properties": {
+          "metric": {
+            "$ref": "#/components/schemas/InventoryMetricName"
+          },
+          "aggregate": {
+            "$ref": "#/components/schemas/InventoryMetricAggregation"
+          },
+          "series": {
+            "description": "An array of data points.\n",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Series"
+            },
+            "example": [
+              {
+                "data": [
+                  {
+                    "timestamp": "2019-08-07T09:00:00Z",
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "data": [
+                  {
+                    "timestamp": "2019-08-07T10:00:00Z",
+                    "value": 5
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "Series": {
+        "description": "This object represents a set of data points.",
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "description": "Array of data points for a metric.\n",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetricData"
+            },
+            "example": [
+              {
+                "timestamp": "2019-08-07T09:00:00Z",
+                "value": 10
+              }
+            ]
+          }
+        }
+      },
+      "MetricStartTime": {
+        "description": "The start time of your metrics query.\n\nUsage:\n* `start_time` is required if `end_time` is specified.\n* If `start_time` and `end_time` isn't provided, the API returns metrics from the current time to the month before the current time.\n* The `start_time` cannot be older than 120 days before the current time.\n\nYou can set the `start_time` in these ways:\n* In ISO 8601 format. For example, \"2019-08-07T09:57:36.088757764Z\".\n* As an offset from the current time. For the offset, use `+` or `-`, followed by a number and unit [`y` (years), `M` (months), `w` (weeks), `d` (days), `h` (hours), `m` (minutes), or `s` (seconds)]. \n* Example of an offset: \"now-3h\" (3 hours before now).\n",
+        "type": "string",
+        "example": "2019-08-07T09:57:36.088757764Z"
+      },
+      "MetricEndTime": {
+        "description": "The end time of your metrics query.\n\nUsage:\n* Must be greater than `start_time`.\n* The time difference between `start_time` and `end_time` should be greater than an hour.\n* The default `end_time` is the current time.\n* The `end_time` cannot be older than 120 days before the current time.\n\nYou can set the `end_time` in these ways:\n* In ISO 8601 format. For example, \"2019-08-07T09:57:36.088757764Z\".\n* As an offset from the current time. For the offset, use `+` or `-`, followed by a number and unit [`y` (years), `M` (months), `w` (weeks), `d` (days), `h` (hours), `m` (minutes), or `s` (seconds)]. \n* Example of an offset: \"now-3h\" (3 hours before now).\n",
+        "type": "string",
+        "example": "2019-08-07T09:57:36.088757764Z"
+      },
+      "InventoryMetricAggregation": {
+        "type": "string",
+        "description": "Static list of aggregation functions that can be applied to a compatible metric.\n  * count\n  * sum\n  * avg\n  * min\n  * max\n",
+        "enum": [
+          "count",
+          "sum",
+          "avg",
+          "min",
+          "max"
+        ],
+        "x-enum-varnames": [
+          "metric_aggregation_count",
+          "metric_aggregation_sum",
+          "metric_aggregation_avg",
+          "metric_aggregation_min",
+          "metric_aggregation_max"
+        ]
+      },
+      "BaseInventoryQueryRequest": {
+        "type": "object",
+        "required": [
+          "metrics"
+        ],
+        "properties": {
+          "metrics": {
+            "$ref": "#/components/schemas/InventoryMetricNames"
+          },
+          "start_time": {
+            "$ref": "#/components/schemas/MetricStartTime"
+          },
+          "end_time": {
+            "$ref": "#/components/schemas/MetricEndTime"
+          }
+        }
+      },
+      "InventoryMetricQueryRequest": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseInventoryQueryRequest"
+          }
+        ]
+      },
+      "InventoryMetricNames": {
+        "type": "array",
+        "description": "Specify the metrics to collect.\n\nUsage: \n* List multiple metrics as JSON objects.\n* You can aggregate metrics with `count`, `sum`, `avg`, `min`, `max`.\n",
+        "items": {
+          "$ref": "#/components/schemas/InventoryMetricQuery"
+        },
+        "example": [
+          {
+            "name": "nginx.plus.instances",
+            "aggregate": [
+              "count"
+            ]
+          }
+        ]
+      },
+      "InventoryMetricQuery": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/InventoryMetricName"
+          },
+          "aggregate": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InventoryMetricAggregation"
+            }
+          }
+        }
+      },
+      "InventoryMetricName": {
+        "type": "string",
+        "description": "Metric names available for querying.\n",
+        "example": "nginx.plus.instances",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/MetricNginxInstancesPlus"
+          },
+          {
+            "$ref": "#/components/schemas/MetricK8sClusterNodes"
+          }
+        ]
+      },
+      "MetricNginxInstancesPlus": {
+        "type": "string",
+        "description": "Total number of nginx plus instances.\n\nAggregation(s) supported:\n  * count\n  * sum\n  * avg\n  * min\n  * max\n",
+        "enum": [
+          "nginx.plus.instances"
+        ]
+      },
+      "MetricK8sClusterNodes": {
+        "type": "string",
+        "description": "Sum of the Kubernetes worker nodes where nginx plus instances are deployed in a Kubernetes cluster.\n\nAggregation(s) supported:\n  * count\n  * sum\n  * avg\n  * min\n  * max\n",
+        "enum": [
+          "k8s.cluster.nodes"
+        ]
       }
     },
     "examples": {
@@ -7800,6 +8158,12 @@
       "name": "Manage NGINX One Settings",
       "tags": [
         "Settings"
+      ]
+    },
+    {
+      "name": "NGINX Plus Usage Inventory",
+      "tags": [
+        "Inventory"
       ]
     }
   ]

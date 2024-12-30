@@ -571,7 +571,8 @@ check_if_nim_installed(){
 
   local all_services_present=0
 
-  if nms-core --version && nms-dpm --version && nms-integrations --version && nms-ingestion --version && nginx -version; then
+  if nms-core --version > /dev/null 2>&1 && nms-dpm --version > /dev/null 2>&1 && nms-integrations --version > /dev/null 2>&1 \
+   && nms-ingestion --version > /dev/null 2>&1 && nginx -version > /dev/null 2>&1; then
     all_services_present=1
   fi
 
@@ -591,40 +592,52 @@ check_if_nim_installed(){
 }
 
 uninstall_nim(){
-  # Clickhouse server, Clickhouse client, clickhouse static, nms, nginx
-  systemctl stop clickhouse-server
-  check_last_command_status "systemctl stop clickhouse-server" $?
-  systemctl stop nginx
-  check_last_command_status "systemctl stop nginx" $?
-  systemctl stop nms nms-core nms-dpm nms-ingestion nms-integrations
-  check_last_command_status "systemctl stop nms nms-core nms-dpm nms-ingestion nms-integrations" $?
 
-  if cat /etc/*-release | grep -iq 'debian\|ubuntu'; then
-    apt-get -y remove clickhouse-common-static clickhouse-server clickhouse-client
-    apt-get -y remove nms-instance-manager --purge
-    check_last_command_status "apt-get remove nms-instance-manager" $?
-    apt-get -y remove nginx --purge
-    apt-get -y remove nginx-plus --purge
-    rm -rf /etc/nginx
-    rm -rf /etc/nms
-    rm -rf /var/log/nms
-    echo "NGINX Instance Manager Uninstalled successfully"
-    exit 0
-  elif cat /etc/*-release | grep -iq 'centos\|fedora\|rhel\|Amazon Linux'; then
-    yum -y remove clickhouse-common-static clickhouse-server clickhouse-client
-    yum -y remove nms-instance-manager
-    check_last_command_status "yum remove nms-instance-manager" $?
-    yum -y remove nginx
-    yum -y remove nginx-plus
-    rm -rf /etc/nginx
-    rm -rf /etc/nms
-    rm -rf /var/log/nms
-    yum autoremove
-    echo "NGINX Instance Manager Uninstalled successfully"
-    exit 0
+  echo -e "\nAre you ready to remove all packages and files related to NGINX Instance Manager ? \n\
+This action deletes all files in the following directories: /etc/nms , /etc/nginx, /var/log/nms"
+
+  read -p "Enter your choice (y/N) = " response
+
+  if [[ "$response" =~ ^[Yy]$ ]]; then
+      # Clickhouse server, Clickhouse client, clickhouse static, nms, nginx
+    systemctl stop clickhouse-server
+    check_last_command_status "systemctl stop clickhouse-server" $?
+    systemctl stop nginx
+    check_last_command_status "systemctl stop nginx" $?
+    systemctl stop nms nms-core nms-dpm nms-ingestion nms-integrations
+    check_last_command_status "systemctl stop nms nms-core nms-dpm nms-ingestion nms-integrations" $?
+
+    if cat /etc/*-release | grep -iq 'debian\|ubuntu'; then
+      apt-get -y remove clickhouse-common-static clickhouse-server clickhouse-client
+      apt-get -y remove nms-instance-manager --purge
+      check_last_command_status "apt-get remove nms-instance-manager" $?
+      apt-get -y remove nginx --purge
+      apt-get -y remove nginx-plus --purge
+      rm -rf /etc/nginx
+      rm -rf /etc/nms
+      rm -rf /var/log/nms
+      echo "NGINX Instance Manager Uninstalled successfully"
+      exit 0
+    elif cat /etc/*-release | grep -iq 'centos\|fedora\|rhel\|Amazon Linux'; then
+      yum -y remove clickhouse-common-static clickhouse-server clickhouse-client
+      yum -y remove nms-instance-manager
+      check_last_command_status "yum remove nms-instance-manager" $?
+      yum -y remove nginx
+      yum -y remove nginx-plus
+      rm -rf /etc/nginx
+      rm -rf /etc/nms
+      rm -rf /var/log/nms
+      yum autoremove
+      echo "NGINX Instance Manager Uninstalled successfully"
+      exit 0
+    else
+      printf "Unsupported distribution"
+      exit 1
+    fi
   else
-    printf "Unsupported distribution"
-    exit 1
+    echo -e "\nUninstallation cancelled"
+    echo -e "Note -> Back up the following directories: /etc/nms, /etc/nginx, /var/log/nms. Then you can use the script to remove NGINX Instance Manager.\n"
+    exit 0
   fi
 }
 
