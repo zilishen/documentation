@@ -6,11 +6,13 @@ public repository. However, if you are working with:
 - Security content, including personally identifying information (PII).
 - Content / features that are not yet ready to be announced.
 
-Make changes to the `docs-internal` repository. When you create a branch, start it with:
+Make changes to the private `docs` repository. When you create a branch, start it with:
 `internal/`. 
 
-- The public `docs` repository will reject branches that start with `internal/`.
-- The `docs-internal` repository will accept branches _only_ if it includes `internal/`.
+- The public `documentation` repository will reject branches that start with `internal/`.
+- The private `docs` repository will accept branches _only_ if it includes `internal/`.
+
+Before new content is published, it must be written to the open `documentation` repository. After you get approvals in the internal `docs` repository, you'll need to create a _second_ pull request in the open `documentation` repository.
 
 If you need to review a pull request and are an employee of F5/NGINX, ask a member of @nginx/nginx-docs for help.
 
