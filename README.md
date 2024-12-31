@@ -24,11 +24,6 @@ This repository contains user documentation for NGINX's products, as well as the
 Our documentation is written in Markdown, specifically the [Goldmark](https://github.com/yuin/goldmark) Markdown parser.
 We build our docs using [Hugo](https://gohugo.io) and host them in custom URLs on Azure.
 
-## Publishing environments
-
-When you submit a Pull Request (PR), our setup automatically builds the documentation with your proposed changes. You'll see the URL
-once you've submitted the PR.
-
 ## License
 
 [BSD 2-Clause "Simplified" License](/LICENSE)
