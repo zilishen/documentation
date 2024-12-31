@@ -8,7 +8,7 @@ public repository. However, if you are working with:
 
 Before new content is published at https://docs.nginx.com, it must be written to this `documentation` repository. After you get approvals in the internal `docs` repository, you'll need to create a _second_ pull request in this open `documentation` repository.
 
-If you are unable to assign yourself as an owner of an issue or a reviewer of a pull request, and are an employee of F5/NGINX, ask a member of the NGINX documentation team for help.
+If you are unable to assign yourself as an owner of an issue or a reviewer of a pull request, and are an employee of F5, ask a member of the NGINX documentation team for help.
 
 We encourage you to work with community contributors. If you participate in
 PRs, issues, discussions, and more, follow these guidelines:

@@ -3,7 +3,7 @@
 The following is a set of guidelines for community contributions to this
 project. We really appreciate your desire to contribute!
 
-If you are an F5/NGINX employee, see the following additional guidance [For F5/NGINX Employees](./F5-NGINX-team-notes.md).
+If you are an F5 employee, see the following additional guidance [For F5 Employees](./F5-NGINX-team-notes.md).
 
 ## Table of contents
 
