@@ -6,15 +6,9 @@ public repository. However, if you are working with:
 - Security content, including personally identifying information (PII).
 - Content / features that are not yet ready to be announced.
 
-Make changes to the private `docs` repository. When you create a branch, start it with:
-`internal/`. 
+Before new content is published at https://docs.nginx.com, it must be written to this `documentation` repository. After you get approvals in the internal `docs` repository, you'll need to create a _second_ pull request in this open `documentation` repository.
 
-- The public `documentation` repository will reject branches that start with `internal/`.
-- The private `docs` repository will accept branches _only_ if it includes `internal/`.
-
-Before new content is published, it must be written to the open `documentation` repository. After you get approvals in the internal `docs` repository, you'll need to create a _second_ pull request in the open `documentation` repository.
-
-If you need to review a pull request and are an employee of F5/NGINX, ask a member of @nginx/nginx-docs for help.
+If you are unable to assign yourself as an owner of an issue or a reviewer of a pull request, and are an employee of F5/NGINX, ask a member of the NGINX documentation team for help.
 
 We encourage you to work with community contributors. If you participate in
 PRs, issues, discussions, and more, follow these guidelines:
@@ -26,5 +20,7 @@ PRs, issues, discussions, and more, follow these guidelines:
   specifically authorized.
 - Do not include anything that even resembles PII.
 - Do not include information that is proprietary to and/or private within F5/NGINX.
+
+As an F5/NGINX employee, if you have a GitHub account, you should be able to clone these repositories.
 
 To protect F5/NGINX, the ability to merge pull requests is strictly limited to employees of F5/NGINX.

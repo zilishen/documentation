@@ -13,6 +13,8 @@ Testing: Describe any testing that you did.
 Please focus on (optional): If you any specific areas where you would like reviewers to focus their attention or provide
 specific feedback, add them here.
 
+If this PR addresses an [issue](https://github.com/nginx/documentation/issues) on GitHub, ensure that you link to it here:
+
 Closes #ISSUE
 
 ### Checklist
