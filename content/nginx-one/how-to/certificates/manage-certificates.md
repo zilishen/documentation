@@ -20,7 +20,7 @@ From the NGINX One Console you can:
 - Ensure that your certificates are current and correct.
 - Manage your certificates from a central location. This can help you simplify operations and remotely update, rotate, and deploy those certificates.
 
-For more information on how you can use these certificates to secure your servers, refer to the section on [NGINX SSL termination]({{< relref "../../../nginx/admin-guide/security-controls/terminating-ssl-http.md" >}}).
+For more information on how you can use these certificates to secure your servers, refer to the section on [NGINX SSL termination]({{< relref "/nginx/admin-guide/security-controls/terminating-ssl-http.md" >}}).
 
 {{< tip >}}
 
@@ -128,9 +128,23 @@ In each case, you can upload files directly, or enter the content of the certifi
 
 You can modify existing certificates from the **Certificates** screen. Select the certificate of your choice. Depending on the type of certificate, you'll then see either a **Edit Certificate** or **Edit CA Bundle** option. The NGINX One Console then presents a window with the same options as shown when you [Add a new certificate](#add-a-new-certificate-or-bundle).
 
-## Delete a certificate
+If that certificate is already managed as part of a Config Sync Group, the changes you make affect all instances in that group.
 
-To delete a certificate, find the name in the **Certificates** screen. Find the **Actions** column associated with the certificate. Select the ellipsis and then select **Delete**.
+## Remove a deployed certificate
+
+You can remove a deployed certificate from an independent instance or from a Config Sync Group. This will remove the certificate's association with the instance or group, but it does not delete the certificate files from the instance(s).
+
+Every instance with a deployed certificate includes paths to certificates in their configuration files. If you remove the deployed file path to one certificate, that change is limited to that one instance.
+
+Every Config Sync Group also includes paths to certificates in its configuration files. If you remove the deployed path to one certificate, that change affects all instances which belong to that Config Sync Group. 
+
+## Delete a deployed certificate
+
+To delete a certificate, find the name in the **Certificates** screen. Find the **Actions** column associated with the certificate. Select the ellipsis (`...`) and then select **Delete**. Before deleting that certificate, you should see a warning.
+
+If that certificate is managed and is part of a Config Sync Group, that change affects all instances in that group.
+
+{{< warning >}} Do not delete certificates that are being used by an instance or a Config Sync Group. Deleting such certificates leads to failure in affected NGINX deployments. {{< /warning >}}
 
 ## Managed and unmanaged certificates
 
@@ -141,7 +155,7 @@ If you register an instance to NGINX One Console, as described in [Add your NGIN
 
 These certificates appear in the list of unmanaged certificates.
 
-We recommend that you convert your unmanaged certificates. Converting to a managed certificate allows you to centrally manage, update, and deploy a certificate to your NGINX instances from the NGINX One Console.
+We recommend that you convert your unmanaged certificates. Converting to a managed certificate allows you to centrally manage, update, and deploy a certificate to your data plane from the NGINX One Console.
 
 To convert these cerificates to managed, start with the Certificates menu, and select **Unmanaged**. You should see a list of **Unmanaged Certificates or CA Bundles**. Then:
 
@@ -149,7 +163,7 @@ To convert these cerificates to managed, start with the Certificates menu, and s
 - Select **Convert to Managed**
 - In the window that appears, you can now include the same information as shown in the [Add a new certificate](#add-a-new-certificate) section
 
-<!-- Once you've completed the process, NGINX One reassigns this as a managed certificate, and assigns it to the associated instance or config sync group. -->
+<!-- Once you've completed the process, NGINX One reassigns this as a managed certificate, and assigns it to the associated instance or Config Sync Group. -->
 
 ## See also
 

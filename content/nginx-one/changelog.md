@@ -46,11 +46,11 @@ For more information, see the full documentation on how you can [Manage Certific
 
 ## August 22, 2024
 
-### Config sync groups
+### Config Sync Groups
 
-Config sync groups are now available in the F5 NGINX One Console. This feature allows you to manage and synchronize NGINX configurations across multiple instances as a single entity, ensuring consistency and simplifying the management of your NGINX environment.
+Config Sync Groups are now available in the F5 NGINX One Console. This feature allows you to manage and synchronize NGINX configurations across multiple instances as a single entity, ensuring consistency and simplifying the management of your NGINX environment.
 
-For more information, see the full documentation on [Managing Config Sync Groups]({{< relref "/nginx-one/how-to/nginx-configs/manage-config-sync-groups.md" >}}).
+For more information, see the full documentation on [Managing Config Sync Groups]({{< relref "/nginx-one/how-to/config-sync-groups/manage-config-sync-groups.md" >}}).
 
 ## August 8, 2024
 

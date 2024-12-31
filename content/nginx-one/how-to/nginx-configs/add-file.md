@@ -6,7 +6,7 @@ tags:
     - docs
 title: Add a file in a configuration
 toc: true
-weight: 200
+weight: 400
 ---
 
 
@@ -24,8 +24,8 @@ Before you add files in your configuration, ensure:
 
 ## Important considerations
 
-If your instance is a member of a config sync group, changes that you make may be synchronized to other instances in that group.
-For more information, see how you can [Manage config sync groups]({{< relref "/nginx-one/how-to/nginx-configs/manage-config-sync-groups.md" >}}).
+If your instance is a member of a Config Sync Group, changes that you make may be synchronized to other instances in that group.
+For more information, see how you can [Manage Config Sync Groups]({{< relref "/nginx-one/how-to/config-sync-groups/manage-config-sync-groups.md" >}}).
 
 ## Add a file
 
