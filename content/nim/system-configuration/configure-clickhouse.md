@@ -10,44 +10,48 @@ toc: true
 weight: 100
 ---
 
+{{< include "/nim/decoupling/note-legacy-nms-references.md" >}}
+
 ## Overview
 
-Follow the steps in this guide to update the `/etc/nms/nms.conf` file if you used a custom address, username, or password or enabled TLS when installing ClickHouse. F5 NGINX Management Suite requires this information to connect to ClickHouse.
+Follow this guide to update the `/etc/nms/nms.conf` file if you used a custom address, username, or password, or enabled TLS during ClickHouse installation. NGINX Instance Manager requires this information to connect to ClickHouse.
 
-## Default ClickHouse Values {#default-values}
+## Default ClickHouse values {#default-values}
 
-Unless specified differently in the `/etc/nms/nms.conf` file, NGINX Management Suite uses the following values for ClickHouse by default:
+Unless otherwise specified in the `/etc/nms/nms.conf` file, NGINX Instance Manager uses the following default values for ClickHouse:
 
 {{< include "installation/clickhouse-defaults.md" >}}
 
 ---
 
-## Use Custom Address, Username, Password
+## Use custom address, username, or password
 
-If your ClickHouse installation has a different address, username, or password than the default values, you need to configure NGINX Management Suite to connect to ClickHouse.
+If your ClickHouse installation uses a custom address, username, or password, update the NGINX Instance Manager configuration to match.
 
-To set custom values for the ClickHouse address, username, and password:
+To set custom values:
 
-1. On the NGINX Management Suite server, open the `/etc/nms/nms.conf` file for editing.
-2. Change the following settings to match your ClickHouse configuration:
+1. Open the `/etc/nms/nms.conf` file on the NGINX Instance Manager server.
+2. Update the following settings to match your ClickHouse configuration:
 
-    ``` yaml
+    ```yaml
     clickhouse:
       address: tcp://localhost:9000
       username: <INSERT USERNAME HERE>
       password: <INSERT PASSWORD HERE>
     ```
 
-3. Save the changes and close the file.
+3. Save and close the file.
 
 ---
 
 ## Configure TLS
 
-If you configured ClickHouse to work with TLS, take the following steps to update the settings in the NGINX Management Suite `nms.conf` file:
+If you enabled TLS for ClickHouse, update the `nms.conf` file settings to enable secure connections.
 
-1. On the NGINX Management Suite server, open the `/etc/nms/nms.conf` file for editing.
-2. Configure the `clickhouse` TSL settings to suit your environment:
+To configure TLS:
+
+1. Open the `/etc/nms/nms.conf` file on the NGINX Instance Manager server.
+2. Update the `clickhouse` TLS settings as needed:
 
     ```yaml
     clickhouse:
@@ -90,4 +94,4 @@ If you configured ClickHouse to work with TLS, take the following steps to updat
       migrations_path: /test/migrations
     ```
 
-3. Save the changes and close the file.
+3. Save and close the file.

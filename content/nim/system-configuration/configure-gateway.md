@@ -1,59 +1,102 @@
 ---
-description: Follow the steps in this guide to fine-tune the NGINX proxy gateway for
-  F5 NGINX Management Suite to support large data planes running numerous NGINX Agents.
 docs: DOCS-1131
 doctypes:
 - tutorial
 tags:
 - docs
-title: Optimize NGINX Proxy Gateway for Large Data Planes
+title: Optimize NGINX proxy gateway for large data planes
 toc: true
 weight: 400
 ---
 
+{{< include "/nim/decoupling/note-legacy-nms-references.md" >}}
+
 ## Overview
 
-If the NGINX proxy gateway for F5 NGINX Management Suite alerts you that there are not enough worker connections, you may need to modify the NGINX configuration (`/etc/nginx/nginx.conf` on the NGINX Management Suite host) to allow more worker connections and increase the number of file descriptors for worker processes.
+If the NGINX proxy gateway for F5 NGINX Instance Manager alerts you that there are not enough worker connections, you may need to update the NGINX configuration (`/etc/nginx/nginx.conf`) on the NGINX Instance Manager host. These updates include increasing the number of worker connections and file descriptors for worker processes to support larger data planes effectively.
 
-## Configure Worker Connections
+---
 
-By default, the NGINX Management Suite's NGINX configuration (`/etc/nginx/nginx.conf`) allows 1024 worker connections (`worker_connections`). However, this default may be insufficient if you have a large data plane with numerous NGINX Agents. To ensure optimal performance, we suggest allowing **twice as many worker connections as the number of NGINX Agents** you want to support. This is because each NGINX Agent requires two persistent gRPC connections to the NGINX Management Suite. If you have 1,000 NGINX Agents, for example, you should allow around 2,000 worker connections.
+## Configure worker connections
 
-You may also want to adjust the maximum number of file descriptors (`worker_rlimit_nofile`) that a process can open to align with the number of worker connections. Note that `rlimit_nofile` is a system setting, so make sure to check the user limits for your Linux distribution, as these may be more restrictive.
+By default, the NGINX Instance Manager's NGINX configuration allows 1,024 worker connections (`worker_connections`). However, this default may not be sufficient for large data planes with numerous NGINX Agents. 
 
-To update the number of worker connections and file descriptors, edit the NGINX configuration file (`/etc/nginx/nginx.conf`) on the NGINX Management Suite host. For more information on the NGINX worker connection and file descriptor settings, refer to the following NGINX Core topics:
+We recommend allowing **twice as many worker connections as the number of NGINX Agents** you need to support. Each NGINX Agent requires two persistent gRPC connections to the NGINX Instance Manager host. For example, if you have 1,000 NGINX Agents, configure approximately 2,000 worker connections.
 
-- [NGINX worker_connections](http://nginx.org/en/docs/ngx_core_module.html#worker_connections)
-- [NGINX worker_rlimit_nofile](http://nginx.org/en/docs/ngx_core_module.html#worker_rlimit_nofile)
+To align with the worker connection count, you should also adjust the maximum number of file descriptors (`worker_rlimit_nofile`) that worker processes can open. Since `rlimit_nofile` is a system setting, ensure your Linux user limits allow the required number of file descriptors.
 
-## Configure GRPC for Agents
+### Update worker connections and file descriptors
 
-By default, the NGINX Management Suite's NGINX configuration (`/etc/nginx/conf.d/nms-http.conf`) times out the gRPC connection from Agents at 10 minutes using the client body timeout (`client_body_timeout`). You can adjust this value to suit your needs; a lower value will time out gRPC connection from aborted Agent connections faster. An aborted Agent connection can happen when the Agent disconnects unexpectedly from the network without going through the gRPC protocol teardown process.
+1. Open the NGINX configuration file on the NGINX Instance Manager host:
 
-To update the timeout value, edit the NGINX Management Suite's NGINX configuration file (`/etc/nginx/conf.d/nms-http.conf`) on the NGINX Management Suite host. For example:
+    ```bash
+    sudo nano /etc/nginx/nginx.conf
+    ```
 
-```nginx
-     # gRPC service for metric ingestion
-     location /f5.nginx.agent.sdk.MetricsService {
-         # uncomment to enable mTLS with agent
-         # auth_request /check-agent-client-cert;
-         include /etc/nms/nginx/errors-grpc.loc_conf;
-         grpc_socket_keepalive on;
-         grpc_read_timeout 5m;
-         grpc_send_timeout 5m;
-         client_body_timeout 10m;
-         grpc_pass grpc://ingestion-grpc-service;
-     }
+2. Modify the `worker_connections` and `worker_rlimit_nofile` settings as needed:
 
-     # gRPC service for DPM
-     location /f5.nginx.agent.sdk.Commander {
-         # uncomment to enable mTLS with agent
-         # auth_request /check-agent-client-cert;
-         include /etc/nms/nginx/errors-grpc.loc_conf;
-         grpc_socket_keepalive on;
-         grpc_read_timeout 5m;
-         grpc_send_timeout 5m;
-         client_body_timeout 10m;
-         grpc_pass grpc://dpm-grpc-service;
-     }
-```
+    ```nginx
+    events {
+        worker_connections 2000;
+    }
+
+    worker_rlimit_nofile 2000;
+    ```
+
+3. Save the changes and restart NGINX:
+
+    ```bash
+    sudo systemctl restart nginx
+    ```
+
+For more information, refer to the official NGINX documentation:
+- [worker_connections](http://nginx.org/en/docs/ngx_core_module.html#worker_connections)
+- [worker_rlimit_nofile](http://nginx.org/en/docs/ngx_core_module.html#worker_rlimit_nofile)
+
+---
+
+## Configure gRPC for agents
+
+By default, the NGINX Instance Manager's NGINX configuration (`/etc/nginx/conf.d/nms-http.conf`) times out gRPC connections from NGINX Agents after 10 minutes using the `client_body_timeout` directive. You can adjust this timeout to better suit your needs. For example, a shorter timeout quickly clears connections from agents that disconnect unexpectedly without completing the gRPC protocol teardown.
+
+### Update gRPC timeout settings
+
+1. Open the gRPC configuration file on the NGINX Instance Manager host:
+
+    ```bash
+    sudo nano /etc/nginx/conf.d/nms-http.conf
+    ```
+
+2. Locate the gRPC service locations and modify the `client_body_timeout` value as needed. For example:
+
+    ```nginx
+    # gRPC service for metric ingestion
+    location /f5.nginx.agent.sdk.MetricsService {
+        # uncomment to enable mTLS with agent
+        # auth_request /check-agent-client-cert;
+        include /etc/nms/nginx/errors-grpc.loc_conf;
+        grpc_socket_keepalive on;
+        grpc_read_timeout 5m;
+        grpc_send_timeout 5m;
+        client_body_timeout 10m;
+        grpc_pass grpc://ingestion-grpc-service;
+    }
+
+    # gRPC service for DPM
+    location /f5.nginx.agent.sdk.Commander {
+        # uncomment to enable mTLS with agent
+        # auth_request /check-agent-client-cert;
+        include /etc/nms/nginx/errors-grpc.loc_conf;
+        grpc_socket_keepalive on;
+        grpc_read_timeout 5m;
+        grpc_send_timeout 5m;
+        client_body_timeout 10m;
+        grpc_pass grpc://dpm-grpc-service;
+    }
+    ```
+
+3. Save the changes and restart NGINX:
+
+    ```bash
+    sudo systemctl restart nginx
+    ```

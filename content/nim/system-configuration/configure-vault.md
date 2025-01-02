@@ -1,40 +1,38 @@
 ---
-description: Follow the steps in this guide to configure F5 NGINX Management Suite to
-  use HashiCorp's Vault for storing secrets.
 docs: DOCS-999
 doctypes:
 - tutorial
 tags:
 - docs
-title: Configure Vault for Storing Secrets
+title: Configure Vault for storing secrets
 toc: true
 weight: 200
 ---
 
-{{< shortversions "2.6.0" "latest" "nimvers" >}}
+{{< include "/nim/decoupling/note-legacy-nms-references.md" >}}
 
-HashiCorp's Vault is a popular solution for storing secrets. While F5 NGINX Management Suite provides encryption-at-rest for secrets stored on disk, if you have an existing Vault installation, you may prefer to store all secrets in one place. NGINX Management Suite provides a driver you can use to connect to existing Vault installations and store secrets.
+HashiCorp's Vault is a popular solution for storing secrets. While F5 NGINX Instance Manager provides encryption-at-rest for secrets stored on disk, you may prefer to store all secrets in one place if you have an existing Vault installation. NGINX Instance Manager provides a driver to connect to existing Vault installations and store secrets.
 
-## Before You Begin
+## Before you begin
 
-To complete the steps in this guide, you need the following:
+To complete the steps in this guide, you need:
 
-- A working understanding of [Vault](https://www.vaultproject.io) and its operations
-- A running version of [Vault 1.8.8 or later](https://www.vaultproject.io/docs/install)
+- A working understanding of [Vault](https://www.vaultproject.io) and its operations.
+- A running version of [Vault 1.8.8 or later](https://www.vaultproject.io/docs/install).
 
 ---
 
-## Create Periodic Service Tokens {#create-periodic-service-tokens}
+## Create periodic service tokens {#create-periodic-service-tokens}
 
-Access to a vault requires a renewable token.
+Access to a Vault requires a renewable token.
 
-{{<note>}}If you attempt to use the vault's Root Token, NGINX Management Suite will not be able to start the secrets driver, as that token is not renewable.{{</note>}}
+{{<note>}}If you attempt to use the Vault's Root Token, NGINX Instance Manager won't start the secrets driver, as that token is not renewable.{{</note>}}
 
-To create a periodic service token for NGINX Management Suite, take the following steps:
+To create a periodic service token for NGINX Instance Manager:
 
 1. Use the Vault user interface to create a new policy.
 
-   The "default" policy has no access to store or retrieve secrets, and the root policy is too broad. We recommend creating a policy called `nms_secrets` with these capabilities:
+   The "default" policy doesn't allow storing or retrieving secrets, and the root policy is too broad. Create a policy called `nms_secrets` with these capabilities:
 
     ```text
     path "secret/*" {
@@ -42,9 +40,7 @@ To create a periodic service token for NGINX Management Suite, take the followin
     }
     ```
 
-2. Create an initial service token that will last so long as it's renewed on time until it's manually revoked. We recommend a period of 24 hours, which is used in the following example. NGINX Management Suite will always attempt to renew tokens before expiring, so shorter times also work.
-
-   To create a token, take the following step, substituting your vault's Root Token for `$VAULT_ROOT_TOKEN` and your vault's address for `$VAULT_ADDR`:
+2. Create a renewable service token. We recommend a period of 24 hours. NGINX Instance Manager renews tokens automatically, so shorter periods also work. Run the following, replacing `$VAULT_ROOT_TOKEN` with your Vault's Root Token and `$VAULT_ADDR` with your Vault's address:
 
     ```bash
     curl -X POST --header "X-Vault-Token: $VAULT_ROOT_TOKEN" \
@@ -52,14 +48,14 @@ To create a periodic service token for NGINX Management Suite, take the followin
       $VAULT_ADDR/v1/auth/token/create | jq -r ".auth.client_token" > periodic_token.txt
     ```
 
-3. Verify your token works:
+3. Verify the token works:
 
     ```bash
     curl --header "X-Vault-Token: $(cat periodic_token.txt)" \
       $VAULT_ADDR/v1/auth/token/lookup-self | jq .data
     ```
 
-4. If everything looks good, stop the `nms-core` service and configure NGINX Management Suite to use your token:
+4. If everything works, stop the `nms-core` service and configure NGINX Instance Manager to use the token:
 
     ```bash
     sudo systemctl stop nms-core
@@ -69,13 +65,12 @@ To create a periodic service token for NGINX Management Suite, take the followin
 
 ---
 
-## Start Using Vault to Store Secrets {#start-using-vault}
+## Start using Vault to store secrets {#start-using-vault}
 
-1. To use the new token on the NGINX Management Suite server, open the `/etc/nms/nms.conf` file for editing.
+1. Open the `/etc/nms/nms.conf` file on the NGINX Instance Manager server.
+2. Update the `secrets` section under `core` to specify how to manage secrets.
 
-2. Update the `secrets` section indented under `core` to tell NGINX Management Suite how to handle secrets.
-
-   For example, an internal development installation of Vault might use:
+   For example, an internal Vault installation might use:
 
    ```text
    secrets:
@@ -96,7 +91,7 @@ To create a periodic service token for NGINX Management Suite, take the followin
    ```
 
 3. Save the changes and close the file.
-4. Restart the NGINX Management Suite services to start using Vault to store secrets:
+4. Restart the NGINX Instance Manager services to start using Vault:
 
    ```bash
    sudo systemctl restart nms
@@ -104,29 +99,31 @@ To create a periodic service token for NGINX Management Suite, take the followin
 
 ---
 
-## Switching between Vault and Local Encryption  {#switch-to-from-vault}
+## Switch between Vault and local encryption {#switch-to-from-vault}
 
-After you've set up Vault to store your secrets, you can easily switch between local encryption and Vault as desired.
+After setting up Vault, you can switch between local encryption and Vault.
 
-### Switch to Local Encryption
+### Switch to local encryption
 
-To switch from using Vault to local disk encryption, take the following steps:
-
-1. Stop NGINX Management Suite to ensure exclusive access to the secrets:
+1. Stop NGINX Instance Manager:
 
    ```bash
    sudo systemctl stop nms
    ```
 
-2. Run the following command to migrate secrets from Vault to your local disk:
+2. Migrate secrets to local storage:
 
    ```bash
    sudo nms-core secret migrate-secrets-to-local
    ```
 
-3. Update the `core/secrets/driver` line from `/etc/nms/nms.conf`, which you added in the previous section, to say `driver: local`.
+3. Update the `core/secrets/driver` in `/etc/nms/nms.conf` to use the local driver:
 
-4. Restart NGINX Management Suite:
+   ```text
+   driver: local
+   ```
+
+4. Restart NGINX Instance Manager:
 
    ```bash
    sudo systemctl start nms
@@ -134,23 +131,27 @@ To switch from using Vault to local disk encryption, take the following steps:
 
 ### Switch to Vault
 
-To switch from using local encryption back to Vault, take the following steps:
+To switch from using local encryption back to Vault:
 
-1. Stop NGINX Management Suite to ensure exclusive access to the secrets:
+1. Stop NGINX Instance Manager:
 
    ```bash
    sudo systemctl stop nms
    ```
 
-2. Run the following command to migrate secrets from your local disk to Vault:
+2. Migrate secrets to Vault:
 
    ```bash
    sudo nms-core secret migrate-secrets-to-vault
    ```
 
-3. Update the `core/secrets/driver` line from `/etc/nms/nms.conf`, which you added in the previous section, to say `driver: vault`.
+3. Update the `core/secrets/driver` line in `/etc/nms/nms.conf` to use the Vault driver:
 
-4. Restart NGINX Management Suite:
+   ```text
+   driver: vault
+   ```
+
+4. Restart NGINX Instance Manager:
 
    ```bash
    sudo systemctl start nms
@@ -160,21 +161,10 @@ To switch from using local encryption back to Vault, take the following steps:
 
 ## Troubleshooting
 
-<details open>
-<summary>Token has expired</summary>
+### Token has expired
 
-If the vault service token is manually revoked or expires before renewal -- possibly because NGINX Management Suite was shut down and was
-unavailable to renew the token, all access to stored secrets will fail.
+If the Vault service token is revoked or expires, access to stored secrets will fail. To resolve this, generate and supply a new service token using `nms-core secret vault-token`. See [create periodic service tokens](#create-periodic-service-tokens) for details.
 
-To resolve this problem, you need is to supply a new service token using `nms-core secret vault-token`. See the [Create Periodic Service Tokens](#create-periodic-service-tokens) section above for details on generating and supplying a new token.
-</details>
+### Missing certs after switching
 
-<br>
-
-<details open>
-<summary>Certs are missing after switching to/from Vault</summary>
-
-When configuring Vault for storing secrets, NGINX Management Suite assumes that no secrets have been stored previously and won't migrate any existing stored secrets. All existing certs must be uploaded again.
-
-Stored secrets are not deleted: secrets remain in the encrypted disk storage or vault. We can't guarantee that the secrets will remain accessible forever. If you want to recover the missing secrets, you can [switch back to the other method for storing secrets](#switch-to-from-vault) following the instructions above. Then restart NGINX Management Suite to see the old secrets again.
-</details>
+When switching to Vault, NGINX Instance Manager doesn't migrate existing secrets. Reupload missing certs or switch back to the original storage method to recover access. Restart the service to view the restored secrets.
