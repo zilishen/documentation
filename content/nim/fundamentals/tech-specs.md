@@ -27,7 +27,13 @@ You can deploy NGINX Instance Manager in the following environments:
 
 {{< include "nim/tech-specs/supported-nginx-versions.md" >}}
 
-## Sizing recommendations {#system-sizing}
+## Sizing recommendations for License and Usage Reporting Only {#reporting-sizing}
+
+This page assumes NGINX instances are being “managed” by NGINX Instance Manager. The sizing requirements are significantly less if you are just using NGINX Instance Manager for licensing and usage reporting only. NGINX commercial license and usage reporting is done in an “unmanaged” way, where NGINX simply sends a request periodically to NGINX Instance Manager for counting purposes. See the [Report Usage](https://docs.nginx.com/nginx-instance-manager/disconnected/report-usage-disconnected-deployment/) guide.
+
+Therefore, the requirements for NGINX Instance Manager when it is just used for licensing and usage reporting is minimal (2 CPU, 4gb memory, 20gb storage).
+
+## Sizing recommendations for Managing NGINX Instances {#system-sizing}
 
 The following recommendations provide the minimum guidelines for NGINX Instance Manager. These guidelines ensure adequate performance, but for optimal results, we strongly recommend using solid-state drives (SSDs) for storage.
 
