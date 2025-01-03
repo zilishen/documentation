@@ -28,7 +28,7 @@ We build our docs using [Hugo](https://gohugo.io) and host them in custom URLs o
 
 [BSD 2-Clause "Simplified" License](/LICENSE)
 
-&copy; [F5, Inc.](https://www.f5.com/) 2024
+&copy; [F5, Inc.](https://www.f5.com/) 2025
 
 
 ## Credits
