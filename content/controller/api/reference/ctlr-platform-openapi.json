@@ -905,8 +905,8 @@
                                         "userFormat": "UPN",
                                         "bindUser": {
                                             "type": "PASSWORD",
-                                            "username": "user@mydomain",
-                                            "password": "passwd1234"
+                                            "username": "<username>",
+                                            "password": "<password>"
                                         },
                                         "pollIntervalSec": 3600,
                                         "groupCacheTimeSec": 7200,
@@ -7147,7 +7147,7 @@
                         "endpointUri": "https://ec2.us-west-1.amazonaws.com",
                         "credential": {
                             "type": "AWS_ACCESS_KEY",
-                            "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                            "accessKeyID": "<access key id>",
                             "secretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY)"
                         }
                     }
@@ -7171,7 +7171,7 @@
                         "endpointUri": "https://ec2.us-west-1.amazonaws.com",
                         "credential": {
                             "type": "AWS_ACCESS_KEY",
-                            "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                            "accessKeyID": "<access key id>",
                             "secretAccessKey": "*********"
                         }
                     },
@@ -7180,7 +7180,7 @@
                         "endpointUri": "https://ec2.us-west-1.amazonaws.com",
                         "credential": {
                             "type": "AWS_ACCESS_KEY",
-                            "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                            "accessKeyID": "<access key id>",
                             "secretAccessKey": "*********"
                         }
                     }
@@ -7254,7 +7254,7 @@
                         "type": "AWS_INTEGRATION",
                         "credential": {
                             "type": "AWS_ACCESS_KEY",
-                            "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                            "accessKeyID": "<access key id>",
                             "secretAccessKey": "*********"
                         }
                     }
@@ -7278,7 +7278,7 @@
                         "endpointUri": "https://ec2.us-west-1.amazonaws.com",
                         "credential": {
                             "type": "AWS_ACCESS_KEY",
-                            "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                            "accessKeyID": "<access key id>",
                             "secretAccessKey": "*********"
                         }
                     },
@@ -7287,7 +7287,7 @@
                         "endpointUri": "https://ec2.us-west-1.amazonaws.com",
                         "credential": {
                             "type": "AWS_ACCESS_KEY",
-                            "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                            "accessKeyID": "<access key id>",
                             "secretAccessKey": "*********"
                         }
                     }
@@ -7366,7 +7366,7 @@
                                 "endpointUri": "https://ec2.us-west-1.amazonaws.com",
                                 "credential": {
                                     "type": "AWS_ACCESS_KEY",
-                                    "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                                    "accessKeyID": "<access key id>",
                                     "secretAccessKey": "*********"
                                 }
                             },
@@ -7375,7 +7375,7 @@
                                 "endpointUri": "https://ec2.us-west-1.amazonaws.com",
                                 "credential": {
                                     "type": "AWS_ACCESS_KEY",
-                                    "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                                    "accessKeyID": "<access key id>",
                                     "secretAccessKey": "*********"
                                 }
                             }

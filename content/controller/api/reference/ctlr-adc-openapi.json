@@ -11369,7 +11369,7 @@
                         "type": "AWS_INTEGRATION",
                         "credential": {
                             "type": "AWS_ACCESS_KEY_CREDENTIAL",
-                            "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                            "accessKeyID": "<access key id>",
                             "secretAccessKey": "*********"
                         }
                     },
@@ -11377,7 +11377,7 @@
                         "type": "AWS_INTEGRATION",
                         "credential": {
                             "type": "AWS_ACCESS_KEY_CREDENTIAL",
-                            "accessKeyID": "AKIAJ3N2PZUMZE3Y67ZA",
+                            "accessKeyID": "<access key id>",
                             "secretAccessKey": "*********"
                         }
                     }
@@ -11665,7 +11665,7 @@
                             "desiredState": {
                                 "credential": {
                                     "type": "API_KEY",
-                                    "apiKey": "ADv2ZheQnLjVx5klhQ39"
+                                    "apiKey": "<access key id>"
                                 }
                             }
                         }
@@ -11689,7 +11689,7 @@
                     "desiredState": {
                         "credential": {
                             "type": "API_KEY",
-                            "apiKey": "ADv2ZheQnLjVx5klhQ39"
+                            "apiKey": "<access key id>"
                         }
                     }
                 }
@@ -11707,7 +11707,7 @@
                     "desiredState": {
                         "credential": {
                             "type": "API_KEY",
-                            "apiKey": "ADv2ZheQnLjVx5klhQ39"
+                            "apiKey": "<access key id>"
                         }
                     }
                 }

@@ -91,7 +91,7 @@ Send a POST request to add the API key authentication policy to the API Proxy.
 				"data": [
 					{
 						"clientID": "clientA",
-						"apiKey": "5ff229f7d64e4d6"
+						"apiKey": "<api key>"
 					},
 					{
 						"clientID": "clientB"
@@ -114,7 +114,7 @@ Send a POST request to add the API key authentication policy to the API Proxy.
 | `errorReturnConditions`<br>`.notSupplied`<br>`.returnCode` | int      | In range `400-599`         | The error code that is returned from the API Proxy when an invalid API key is supplied.                               | No       | `401`         |
 | `errorReturnConditions`<br>`.noMatch`<br>`.returnCode`     | int      | In range `400-599`         | The error code that is returned from the API Proxy when an API key is not supplied.                                   | No       | `403`         |
 | `data.clientID`                                            | string   | Example: `ClientA`         | Identifies the client who is holding the API Key.                                                                     | Yes      | N/A           |
-| `data.apiKey`                                              | string   | Example: `5ff229f7d64e4d6` | The value of the API Key used to access the API. If an API Key is not provided, a random 32-byte key will be created. | No       | N/A           |
+| `data.apiKey`                                              | string   | Example: `<api key>` | The value of the API Key used to access the API. If an API Key is not provided, a random 32-byte key will be created. | No       | N/A           |
 
 {{< /bootstrap-table >}}
 

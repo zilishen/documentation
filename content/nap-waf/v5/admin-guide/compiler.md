@@ -136,7 +136,7 @@ For instance:
 {
     "waf-settings": {
         "cookie-protection": {
-            "seed": "80miIOiSeXfvNBiDJV4t"
+            "seed": "<seed value>"
         }
     }
 }

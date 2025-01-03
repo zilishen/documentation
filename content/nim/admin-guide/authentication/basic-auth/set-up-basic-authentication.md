@@ -80,7 +80,7 @@ To change a user's password with the `basic_passwords.sh` script:
     For example:
 
     ```bash
-    sudo bash /etc/nms/scripts/basic_passwords.sh johndoe 'jelly22fi$h'
+    sudo bash /etc/nms/scripts/basic_passwords.sh johndoe '<password>'
     ```
 
 ### Manually set user passwords {#manually-set-basic-passwords}

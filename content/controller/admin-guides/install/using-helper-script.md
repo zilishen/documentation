@@ -183,7 +183,7 @@ Use the `helper.sh` script to change the SMTP address; port; TLS; sender; and op
 For example:
 
 ``` bash
-/opt/nginx-controller/helper.sh configsmtp 192.0.2.0 25 false noreply@example.com true user1 password1
+/opt/nginx-controller/helper.sh configsmtp 192.0.2.0 25 false noreply@example.com true user1 <password>
 ```
 
 <style>
@@ -234,7 +234,7 @@ CTR_SMTP_HOST=192.0.2.0 \
 CTR_SMTP_PORT=25 \
 CTR_SMTP_TLS=false \
 CTR_SMTP_FROM=noreply@nginx.test \
-CTR_SMTP_AUTH=true CTR_SMTP_USER=user1 CTR_SMTP_PASS=password1 \
+CTR_SMTP_AUTH=true CTR_SMTP_USER=user1 CTR_SMTP_PASS=<password> \
 /opt/nginx-controller/helper.sh configsmtp
 ```
 
@@ -253,7 +253,7 @@ Use the `helper.sh` script to change the external config database address; port;
 For example:
 
 ``` bash
-/opt/nginx-controller/helper.sh configdb 192.0.2.1 5432 user1 password1 false
+/opt/nginx-controller/helper.sh configdb 192.0.2.1 5432 user1 <password> false
 ```
 
 <style>
@@ -305,7 +305,7 @@ For example:
 CTR_DB_HOST=192.0.2.1 \
 CTR_DB_PORT=5432 \
 CTR_DB_USER=user1 \
-CTR_DB_PASS=password1 \
+CTR_DB_PASS=<password> \
 CTR_DB_ENABLE_SSL=false \
 /opt/nginx-controller/helper.sh configdb
 ```
