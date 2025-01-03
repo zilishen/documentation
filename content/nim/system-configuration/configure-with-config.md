@@ -5,30 +5,30 @@ doctypes:
 - task
 tags:
 - docs
-title: Configure NGINX Management Suite with nms.conf
+title: Configure NGINX Instance Manager with nms.conf
 toc: true
 weight: 1
 ---
 
+{{< include "/nim/decoupling/note-legacy-nms-references.md" >}}
 
 ## Overview
 
-This guide explains how to configure F5 NGINX Management Suite by editing the **/etc/nms/nms.conf** file.
+This guide explains how to configure F5 NGINX Instance Manager by editing the **/etc/nms/nms.conf** file.
 
-## Before You Start
+## Before you start
 
-Before you set up NGINX Management Suite, ensure:
+Before you set up NGINX Instance Manager, ensure:
 
-- You have access to the **/etc/nms/nms.conf** file on the host where NGINX Management Suite is installed.
+- You have access to the **/etc/nms/nms.conf** file on the host where NGINX Instance Manager is installed.
 - You understand the required settings and options.
 - You have the necessary permissions to edit the configuration file.
 
-## Configuration Details
+## Configuration details
 
-Edit the **/etc/nms/nms.conf** file to configure NGINX Management Suite. The comments in the example configuration file provide details on each setting and its usage.
+Edit the **/etc/nms/nms.conf** file to configure NGINX Instance Manager. The comments in the example configuration file provide details on each setting and its usage.
 
-<details open>
-<summary><i class="fas fa-file-code"></i> Example nms.conf with default settings and values</summary>
+### Example nms.conf with default settings and values
 
 ```yaml
 # This is the default /etc/nms/nms.conf file distributed with Linux packages.
@@ -192,4 +192,3 @@ clickhouse:
 #     skip_verify: true
 #     key_path
 ```
-</details>
