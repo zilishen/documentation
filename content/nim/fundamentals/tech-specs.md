@@ -27,7 +27,7 @@ You can deploy NGINX Instance Manager in the following environments:
 
 {{< include "nim/tech-specs/supported-nginx-versions.md" >}}
 
-## Sizing recommendations {#system-sizing}
+## Sizing recommendations for Managing NGINX Instances {#system-sizing}
 
 The following recommendations provide the minimum guidelines for NGINX Instance Manager. These guidelines ensure adequate performance, but for optimal results, we strongly recommend using solid-state drives (SSDs) for storage.
 
@@ -56,6 +56,18 @@ For environments requiring more resources, **large configurations** are suitable
 |--------------------------------|--------|----------|-----------|---------|
 | 50                             | 4 vCPU | 8 GB RAM | 1 GbE NIC | 1 TB    |
 | 250                            | 4 vCPU | 8 GB RAM | 1 GbE NIC | 2 TB    |
+{{</bootstrap-table>}}
+
+### License and usage reporting only {#reporting-sizing}
+
+This section assumes you've configured NGINX Instance Manager to manage your NGINX instances for licensing and usage reporting only. NGINX commercial license and usage reporting is done in an “unmanaged” way, where NGINX sends a request periodically to NGINX Instance Manager solely for counting purposes. For more information, see how you would [Prepare your environment for reporting]({{< relref "/solutions/about-subscription-licenses.md#set-up-environment" >}}).
+
+Therefore, the requirements for NGINX Instance Manager when used solely for licensing and usage reporting are minimal.
+
+{{<bootstrap-table "table table-striped table-bordered">}}
+| Number of Data Plane Instances | CPU    | Memory   | Network   | Storage |
+|--------------------------------|--------|----------|-----------|---------|
+| n/a                            | 2 vCPU | 4 GB RAM | 1 GbE NIC | 20 GB   |
 {{</bootstrap-table>}}
 
 ### Sizing benchmarks for storage
