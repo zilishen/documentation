@@ -6398,7 +6398,7 @@
             {
               "agent_version": "v2.30.3",
               "hostname": "4d116619f106",
-              "key": "key_Tet21AeYTHCj7taOwVfzyw",
+              "key": "<key>",
               "last_reported": "2023-12-06T22:37:24.120114Z",
               "nginx_build": {
                 "conf_path": "/etc/nginx/nginx.conf",
@@ -7926,7 +7926,7 @@
               "created_at": "2023-10-01T00:00:00Z",
               "revoked": false,
               "name": "my-data-plane-key",
-              "object_id": "key_Tet21AeYTHCj7taOwVfzyw",
+              "object_id": "<data plane object id>",
               "instances_count": 3
             }
           ]
@@ -7941,9 +7941,9 @@
       "DataPlaneKeyResponse": {
         "value": {
           "expires_at": "2023-12-01T00:00:00Z",
-          "key": "AVQFrgADVFpJ9qvI7BX1+OlHUxdZRMsSCm4Q35CrqAQ=",
+          "key": "<data plane key>",
           "name": "my-data-plane-key",
-          "object_id": "key_Tet21AeYTHCj7taOwVfzyw"
+          "object_id": "<data plane object id>"
         }
       },
       "DataPlaneKey": {

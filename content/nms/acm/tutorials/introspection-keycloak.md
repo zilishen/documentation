@@ -277,7 +277,7 @@ curl -L -X POST 'http://192.0.2.5:8080/realms/nginx/protocol/openid-connect/toke
   -H 'Content-Type: application/x-www-form-urlencoded' \
   --data-urlencode 'client_id=nginx-plus' \
   --data-urlencode 'grant_type=password' \
-  --data-urlencode 'client_secret=Fa0QIV5uNWD9lC9k5tg64m0WYxZkUwgA' \
+  --data-urlencode 'client_secret=<REPLACE_WITH_CLIENT_SECRET>' \
   --data-urlencode 'scope=openid' \
   --data-urlencode 'username=nginx-user' \
   --data-urlencode 'password=password' \
@@ -563,7 +563,7 @@ In this section, we will use the API Connectivity Manager Rest API to set up a p
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -701,7 +701,7 @@ You can configure the Introspection policy to let users pass their access token 
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -763,7 +763,7 @@ You can configure the Introspection policy to let users pass their access token 
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -839,7 +839,7 @@ You can configure token caching in the Introspection policy by setting the `acti
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -900,7 +900,7 @@ You can configure token caching in the Introspection policy by setting the `acti
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -960,7 +960,7 @@ You can define multiple hostnames/IP addresses and port combinations, along with
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -1030,7 +1030,7 @@ You can define multiple hostnames/IP addresses and port combinations, along with
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -1121,7 +1121,7 @@ You'll need to consult your OAuth server's documentation to determine which clai
                         "data": [
                             {
                                 "clientAppID": "nginx-plus",
-                                "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                                "clientSecret": "<client secret>"
                             }
                         ]
                     }
@@ -1241,7 +1241,7 @@ It is possible to verify string, integer, boolean, and array of strings data-typ
                         "data": [
                             {
                                 "clientAppID": "nginx-plus",
-                                "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                                "clientSecret": "<client secret>"
                             }
                         ]
                     }
@@ -1347,7 +1347,7 @@ You can change the `401` and `403` response codes by configuring the `action.err
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -1422,7 +1422,7 @@ For reference, see [JWT Response for OAuth Token Introspection](https://datatrac
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }
@@ -1494,7 +1494,7 @@ For reference, see [JWT Response for OAuth Token Introspection](https://datatrac
                   "data": [
                      {
                         "clientAppID": "nginx-plus",
-                        "clientSecret": "lpBTyPxDORks6RHJ0nfYp6q1CvJzWSkF"
+                        "clientSecret": "<client secret>"
                      }
                   ]
                }

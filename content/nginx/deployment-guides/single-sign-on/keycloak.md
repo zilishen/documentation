@@ -131,7 +131,7 @@ Configure NGINX Plus as the OpenID Connect relying party:
    - `map $host $oidc_authz_endpoint` – Value of `authorization_endpoint` from [Step 3](#nginx-plus-urls) (in this guide, <span style="white-space: nowrap;">`https://<keycloak-server-address>/auth/realms/master/protocol/openid-connect/auth`</span>)
    - `map $host $oidc_token_endpoint` – Value of `token_endpoint` from [Step 3](#nginx-plus-urls) (in this guide, <span style="white-space: nowrap;">`https://<keycloak-server-address>/auth/realms/master/protocol/openid-connect/token`)</span>
    - `map $host $oidc_client` – Value in the **Client ID** field from [Step 3 of _Configuring Keycloak_](#keycloak-client-id) (in this guide, `NGINX Plus`)
-   - `map $host $oidc_client_secret` – Value in the **Secret** field from [Step 5 of _Configuring Keycloak_](#keycloak-secret) (in this guide, <span style="white-space: nowrap;">`w4b32c4b0-f4b3-41d9-a345-2bc0fbfcaaba`)</span>
+   - `map $host $oidc_client_secret` – Value in the **Secret** field from [Step 5 of _Configuring Keycloak_](#keycloak-secret) (in this guide, <span style="white-space: nowrap;">`<oidc client secret>`)</span>
    - `map $host $oidc_hmac_key` – A unique, long, and secure phrase
 
 5. Configure the JWK file. The procedure depends on which version of NGINX Plus you are using.

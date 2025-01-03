@@ -56,6 +56,8 @@ Download the SSL certificate and private key required for NGINX Instance Manager
 
 {{<fa "download">}} {{<link "/scripts/install-nim-bundle.sh" "Download the install-nim-bundle.sh script.">}}
 
+### Use the script to Download the necessary packages to Install NGINX Instance Manager in a Disconnected environment
+
 To run the script, enter the following command, replacing `<path/to/certificate.crt>` and `<path/to/private.key>` with the full paths and filenames of your SSL certificate and private key files:
 
 ```shell
@@ -64,16 +66,12 @@ sudo bash install-nim-bundle.sh \
   -k <path/to/private.key> \
   -m offline \
   -d <distribution> \
-  -p <version> \
   -v <version> \
-  -j <path/to/nginx-product.jwt>
 ```
 
 <br>
 
-By default, this command installs the latest version of NGINX Open Source. To install NGINX Plus or specify a different version of NGINX Open Source, use the `-p` or `-n` options as needed.
-
-{{< note >}} Starting from [NGINX Plus Release 33]({{< ref "nginx/releases.md#r33" >}}), a JWT file is required for each NGINX Plus instance. For more information, see [About Subscription Licenses]({{< ref "/solutions/about-subscription-licenses.md">}}). {{< /note >}}
+By default, this command installs the latest version of NGINX Open Source to run NGINX Instance Manager. NGINX Plus is currently not supported when using the script in Disconnected mode. Please see this guide to install NGINX Plus offline if you would like to use this in front of NGINX Instance Manager 
 
 <br>
 
@@ -83,11 +81,8 @@ By default, this command installs the latest version of NGINX Open Source. To in
 - **`-k`**: Uses the specified private key file. Copies the file to the /etc/ssl/nginx directory.
 - **`-m`**: Sets the installation mode (use `offline` for disconnected environments).
 - **`-d`**: Defines the target distribution (replace `<distribution>` with one of the supported options below).
-- **`-n`**: Installs a specific version of NGINX Open Source. Use `latest` to install the most recent version or specify a version like `1.27.1`. If neither `-n` nor `-p` is specified, the script defaults to installing the latest version of NGINX Open Source.
-- **`-p`**: Installs the specified version of NGINX Plus. Use `latest` for the newest version or a specific release like `R32`. Overrides the `-n` option if both are specified.
+- **`-n`**: Installs a specific version of NGINX Open Source. Use `latest` to install the most recent version or specify a version like `1.27.1`. The script defaults to installing the latest version of NGINX Open Source.
 - **`-v`**: Installs the specified version of NGINX Instance Manager. Use `latest` for the newest version or a specific release like `2.18.0`. If you skip this option, the script assumes you want to install `latest`.
-- **`-j`**: Uses the specified JWT token.
-
 
 **Supported distributions:**
 
