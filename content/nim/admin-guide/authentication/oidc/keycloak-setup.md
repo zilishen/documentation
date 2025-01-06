@@ -47,8 +47,15 @@ Follow these steps to configure Keycloak.
 
 After the client is created, configure it as follows:
 
+If Keycloak is version < 18.x
+
 1. On the **Settings** tab, in the **Access Type** list, select **confidential**.
 2. On the **Mappers** tab, select **Add Builtin**, and select **groups**. This exports the user's Keycloak Realm Role information for NGINX Instance Manager to use.
+
+If Keycloak is version >= 18.x
+
+1. On the **Settings** tab, enable the **Client authentication** toggle under the Capability config. Also, enable the **Direct Access Grants** and **Service Account** roles in the **Authentication flow** section.
+2. Select the **Client Scopes** tab, under the list of scopes click on the scope with the name **<client_name>-dedicated (nim-dedicated)**. Under the **Mappers** tab, click **Configure new Mapper** and select **From predefined mappers**. In the **Add predefined mappers** section, search for **groups** mapper and select **Add groups mapper**.
 
 ### Create Keycloak Roles
 
@@ -119,6 +126,8 @@ To configure NGINX Instance Manager with the necessary OIDC settings, follow the
 
 - Export the environment variables:
 
+If Keycloak is version < 18.x:
+
     ```bash
     # Either the FQDN or the IP address is suitable for these environment variables.
     export KEYCLOAK_IP="<insert-keycloak-IP>"
@@ -134,6 +143,23 @@ To configure NGINX Instance Manager with the necessary OIDC settings, follow the
     export KEYCLOAK_KEYS_ENDPOINT=$(curl -k "https://$KEYCLOAK_IP:8443/auth/realms/<realm-name>/.well-known/openid-configuration" | jq -r ".jwks_uri")
     ```
 
+If Keycloak is version >= 18.x (‘/auth’ path is no longer needed):
+
+    ```bash
+    # Either the FQDN or the IP address is suitable for these environment variables.
+    export KEYCLOAK_IP="<insert-keycloak-IP>"
+    export NIM_IP="<insert-NIM-IP>"
+    export KEYCLOAK_CLIENT_ID="<insert-keycloak-client-id>"
+    export KEYCLOAK_CLIENT_SECRET="<insert-kecloak-client-secret>"
+
+    # Choose an appropriate Hash-Based Message Authentication Code (HMAC)
+    export HMAC_KEY="<insert-HMAC>"
+
+    export KEYCLOAK_AUTH_ENDPOINT=$(curl -k “https://$KEYCLOAK_IP:8443/realms/<realm-name>/.well-known/openid-configuration” | jq -r “.authorization_endpoint”)
+    export KEYCLOAK_TOKEN_ENDPOINT=$(curl -k “https://$KEYCLOAK_IP:8443/realms/<realm-name>/.well-known/openid-configuration” | jq -r “.token_endpoint”)
+    export KEYCLOAK_KEYS_ENDPOINT=$(curl -k “https://$KEYCLOAK_IP:8443/realms/<realm-name>/.well-known/openid-configuration” | jq -r “.jwks_uri”)
+    ```
+    
 - Back up the original configuration files:
 
     ```bash
