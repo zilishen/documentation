@@ -27,7 +27,7 @@ Before merging a pull request, run through this checklist and mark each as compl
 - [ ] If the change involves potentially sensitive changes, I have assessed the possible impact
 - [ ] If applicable, I have added tests that prove my fix is effective or that my feature works
 - [ ] If applicable, I have checked that any relevant tests pass after adding my changes
-- [ ] I have updated any relevant documentation ([`README.md`](https://github.com/nginx/documentation/blob/main/README.md) and [`CHANGELOG.md`](https://github.com/nginx/documentation/blob/main/CHANGELOG.md)
+- [ ] If applicable, I have updated [`README.md`](https://github.com/nginx/documentation/blob/main/README.md) and [`CHANGELOG.md`](https://github.com/nginx/documentation/blob/main/CHANGELOG.md)
 - [ ] I have rebased my branch onto main
 - [ ] I will ensure my PR is targeting the main branch and pulling from my branch from my own fork
 
