@@ -12,7 +12,7 @@ type:
 This article describes how to log errors and requests in NGINX Open Source and NGINX Plus.
 
 <span id="error_log"></span>
-## Setting Up the Error Log
+## Set Up the Error Log
 
 NGINX writes an error log that records encountered issues of different severity levels. The [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) directive sets up the log location and severity level. The log location can be a particular file, `stderr`, or `syslog`. By default, the error log is located at **logs/error.log**, but the absolute path depends on the operating system and installation. The error severity level follows the `syslog` classification system. The log includes messages from all severity levels above the specified level. 
 
@@ -25,17 +25,17 @@ error_log logs/error.log warn;
 
 In this case, messages above the `warn` level are logged. That includes `warn`, `error` `crit`, `alert`, and `emerg` levels.
 
-The default setting of the error log works globally. To override it, place the [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) directive in the `main` (top-level) configuration context. Settings in the `main` context are always inherited by other configuration levels (`http`, `server`, `location`). The `error_log` directive can be also specified at the [http](https://nginx.org/en/docs/http/ngx_http_core_module.html#http), [stream](https://nginx.org/en/docs/stream/ngx_stream_core_module.html#stream), `server` and [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location) levels. Settings at lower levels override the settings inherited from the higher levels. Each error message is written only once to the error log closest to the level where the error has occurred. However, if several `error_log` directives are specified on the same level, the message are written to all specified logs.
+The default setting of the error log works globally. To override it, place the [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) directive in the `main` (top-level) configuration context. Settings in the `main` context are always inherited by other configuration levels (`http`, `server`, `location`). The `error_log` directive can be also specified at the [http](https://nginx.org/en/docs/http/ngx_http_core_module.html#http), [stream](https://nginx.org/en/docs/stream/ngx_stream_core_module.html#stream), `server` and [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location) levels. Settings at lower levels override the settings inherited from the higher levels. Each error message is written only once to the error log closest to the level where the error has occurred. However, if several `error_log` directives are specified on the same level, the message is written to all specified logs.
 
 > **Note:** The ability to specify multiple `error_log` directives on the same configuration level was added in NGINX Open Source  version [1.5.2](https://nginx.org/en/CHANGES).
 
 
 <span id="access_log"></span>
-## Setting Up the Access Log
+## Set Up the Access Log
 
-NGINX writes information about client requests in the access log right after the request is processed. By default, the access log is located at **logs/access.log**, and the information is written to the log in the predefined **combined** format. To override the default setting, use the [log_format](https://nginx.org/en/docs/http/ngx_http_log_module.html#log_format) directive to change the format of logged messages, as well as the [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directive to specify the location of the log and its format. The log format is defined using variables.
+NGINX records client requests in the access log right after the request is processed. The [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directive specifies the location of the log and its format. By default, the access log is located at **logs/access.log**. The format of logged messages is the predefined **combined** format. To change the format of logged messages, use the [log_format](https://nginx.org/en/docs/http/ngx_http_log_module.html#log_format) directive. The log format is defined using variables.
 
-The following examples define the log format that extends the predefined **combined** format with the value indicating the ratio of gzip compression of the response. The format is then applied to a virtual server that enables compression.
+The following examples extend the predefined **combined** format with the value indicating the ratio of gzip compression of the response. The format is then applied to a virtual server that enables compression.
 
 ```nginx
 http {
