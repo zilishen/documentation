@@ -12,7 +12,7 @@ type:
 This article describes how to log errors and requests in NGINX Open Source and NGINX Plus.
 
 <span id="error_log"></span>
-## Set Up the Error Log
+## Set up the error log
 
 NGINX writes an error log that records encountered issues of different severity levels. The [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) directive sets up the log location and severity level. The log location can be a particular file, `stderr`, or `syslog`. By default, the error log is located at **logs/error.log**, but the absolute path depends on the operating system and installation. The error severity level follows the `syslog` classification system. The log includes messages from all severity levels above the specified level. 
 
@@ -31,7 +31,7 @@ The default setting of the error log works globally. To override it, place the [
 
 
 <span id="access_log"></span>
-## Set Up the Access Log
+## Set up the access log
 
 NGINX records client requests in the access log right after the request is processed. The [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directive specifies the location of the log and its format. By default, the access log is located at **logs/access.log**. The format of logged messages is the predefined **combined** format. To change the format of logged messages, use the [log_format](https://nginx.org/en/docs/http/ngx_http_log_module.html#log_format) directive. The log format is defined using variables.
 
@@ -88,7 +88,7 @@ Similar to the `error_log` directive, the [access_log](https://nginx.org/en/docs
 
 
 <span id="conditional"></span>
-## Enabling Conditional Logging
+## Enable conditional logging
 
 Conditional logging allows excluding trivial or unimportant log entries from the access log. In NGINX, conditional logging is enabled by the `if` parameter to the [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directive.
 
@@ -105,7 +105,7 @@ access_log /path/to/access.log combined if=$loggable;
 
 
 <span id="tls_sample"></span>
-## Usecase: Sampling TLS Parameters
+## Usecase: sample TLS parameters
 
 Many clients use TLS versions older than TLS 1.3. Though many ciphers are declared insecure, older implementations still use them; ECC certificates offer greater performance than RSA, but not all clients can accept ECC. Many TLS attacks rely on a “man in the middle” who intercepts the cipher negotiation handshake and forces the client and server to select a less secure cipher. Therefore, it’s important to configure F5 NGINX Plus to not support weak or legacy ciphers, but doing so may exclude legacy clients.
 
@@ -182,7 +182,7 @@ In this example, each client is identified by its unique combination of IP addre
 
 
 <span id="syslog"></span>
-## Logging to Syslog
+## Log to syslog
 
 The `syslog` utility is a standard for computer message logging and allows collecting log messages from different devices on a single syslog server. In NGINX, logging to syslog is configured with the `syslog:` prefix in [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) and [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directives.
 
@@ -203,7 +203,7 @@ The `severity=` parameter sets the severity level of syslog messages for access 
 
 
 <span id="monitoring"></span>
-## Live Activity Monitoring
+## Live activity monitoring
 
 NGINX Plus provides a real-time live activity monitoring interface that shows key load and performance metrics of your [HTTP]({{< ref "nginx/admin-guide/load-balancer/http-load-balancer.md" >}}) and [TCP]({{< ref "nginx/admin-guide/load-balancer/tcp-udp-load-balancer.md" >}}) upstream servers. See the [Live Activity Monitoring]({{< ref "live-activity-monitoring.md" >}}) article for more information.
 
