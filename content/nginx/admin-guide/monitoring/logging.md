@@ -2,7 +2,7 @@
 description: Capture detailed information about errors and request processing in log
   files, either locally or via syslog.
 docs: DOCS-426
-title: Configuring Logging
+title: Configure Logging
 toc: true
 weight: 200
 type:
