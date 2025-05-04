@@ -9,7 +9,7 @@ type:
 - how-to
 ---
 
-This article describes how to configure logging of errors and processed requests in NGINX Open Source and NGINX Plus.
+This article describes how to log errors and requests in NGINX Open Source and NGINX Plus.
 
 <span id="error_log"></span>
 ## Setting Up the Error Log
