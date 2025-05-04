@@ -14,7 +14,8 @@ This article describes how to log errors and requests in NGINX Open Source and 
 <span id="error_log"></span>
 ## Setting Up the Error Log
 
-NGINX writes information about encountered issues of different severity levels to the error log. The [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) directive sets up logging to a particular file, `stderr`, or `syslog` and specifies the minimal severity level of messages to log. By default, the error log is located at **logs/error.log** (the absolute path depends on the operating system and installation), and messages from all severity levels above the one specified are logged.
+NGINX writes an error log that records encountered issues of different severity levels. The [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) directive sets up the log location and severity level. The log location can be a particular file, `stderr`, or `syslog`. By default, the error log is located at **logs/error.log**, but the absolute path depends on the operating system and installation. The error severity level follows the `syslog` classification system. The log includes messages from all severity levels above the specified level. 
+
 
 The configuration below changes the minimal severity level of error messages to log from `error` to `warn`:
 
@@ -22,9 +23,9 @@ The configuration below changes the minimal severity level of error messages to 
 error_log logs/error.log warn;
 ```
 
-In this case, messages of `warn`, `error` `crit`, `alert`, and `emerg` levels are logged.
+In this case, messages above the `warn` level are logged. That includes `warn`, `error` `crit`, `alert`, and `emerg` levels.
 
-The default setting of the error log works globally. To override it, place the [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) directive in the `main` (top-level) configuration context. Settings in the `main` context are always inherited by other configuration levels (`http`, `server`, `location`). The `error_log` directive can be also specified at the [http](https://nginx.org/en/docs/http/ngx_http_core_module.html#http), [stream](https://nginx.org/en/docs/stream/ngx_stream_core_module.html#stream), `server` and [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location) levels and overrides the setting inherited from the higher levels. In case of an error, the message is written to only one error log, the one closest to the level where the error has occurred. However, if several `error_log` directives are specified on the same level, the message are written to all specified logs.
+The default setting of the error log works globally. To override it, place the [error_log](https://nginx.org/en/docs/ngx_core_module.html#error_log) directive in the `main` (top-level) configuration context. Settings in the `main` context are always inherited by other configuration levels (`http`, `server`, `location`). The `error_log` directive can be also specified at the [http](https://nginx.org/en/docs/http/ngx_http_core_module.html#http), [stream](https://nginx.org/en/docs/stream/ngx_stream_core_module.html#stream), `server` and [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location) levels. Settings at lower levels override the settings inherited from the higher levels. Each error message is written only once to the error log closest to the level where the error has occurred. However, if several `error_log` directives are specified on the same level, the message are written to all specified logs.
 
 > **Note:** The ability to specify multiple `error_log` directives on the same configuration level was added in NGINX Open Source  version [1.5.2](https://nginx.org/en/CHANGES).
 
