@@ -35,7 +35,7 @@ The default setting of the error log works globally. To override it, place the [
 
 NGINX records client requests in the access log right after the request is processed. The [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directive specifies the location of the log and its format. By default, the access log is located at **logs/access.log**. The format of logged messages is the predefined **combined** format. To change the format of logged messages, use the [log_format](https://nginx.org/en/docs/http/ngx_http_log_module.html#log_format) directive. The log format is defined using variables.
 
-The following examples extend the predefined **combined** format with the value indicating the ratio of gzip compression of the response. The format is then applied to a virtual server that enables compression.
+The following example extends the predefined **combined** format by specifying the `gzip ratio` keyword. This enables gzip compression of the response in a virtual server.
 
 ```nginx
 http {
@@ -51,7 +51,7 @@ http {
 }
 ```
 
-Another example of the log format enables tracking different time values between NGINX and an upstream server that may help to diagnose a problem if your website experience slowdowns. You can use the following variables to log the indicated time values:
+Another example of the log format enables tracking different time values between NGINX and an upstream server. This may help with diagnosing a slowdown of your website. You can use the following variables to log the indicated time values:
 
 - [`$upstream_connect_time`](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_connect_time) – The time spent on establishing a connection with an upstream server
 - [`$upstream_header_time`](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_header_time) – The time between establishing a connection and receiving the first byte of the response header from the upstream server
@@ -81,11 +81,10 @@ When reading the resulting time values, keep the following in mind:
 - When a request is unable to reach an upstream server or a full header cannot be received, the variable contains `0` (zero)
 - In case of internal error while connecting to an upstream or when a reply is taken from the cache, the variable contains `-` (hyphen)
 
-Logging can be optimized by enabling the buffer for log messages and the cache of descriptors of frequently used log files whose names contain variables. To enable buffering use the `buffer` parameter of the [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directive to specify the size of the buffer. The buffered messages are then written to the log file when the next log message does not fit into the buffer as well as in some other [cases](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log).
-
+The log can be optimized by enabling the `buffer` and the `cache`. With the [buffer](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) parameter enabled, messages will be stored in the buffer first. When the buffer is full (or in some other [cases](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log)), the messages will be written to the log. 
 To enable caching of log file descriptors, use the [open_log_file_cache](https://nginx.org/en/docs/http/ngx_http_log_module.html#open_log_file_cache) directive.
 
-Similar to the `error_log` directive, the [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directive defined on a particular configuration level overrides the settings from the previous levels. When processing of a request is completed, the message is written to the log that is configured on the current level, or inherited from the previous levels. If one level defines multiple access logs, the message is written to all of them.
+Similar to the `error_log` directive, the [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html#access_log) directive defined on a particular configuration level overrides the settings from the previous levels. When processing of a request is completed, the message is written to the log that is configured on the current level, or inherited from the previous levels. If one level has multiple access log definitions, the message is written to all of them.
 
 
 <span id="conditional"></span>
